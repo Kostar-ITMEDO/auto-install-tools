@@ -1,11 +1,11 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Ścieżki
+# Sciezki
 $jsonPath = Join-Path -Path $PSScriptRoot -ChildPath "apps.json"
 
 if (-not (Test-Path $jsonPath)) {
-    [System.Windows.Forms.MessageBox]::Show("Brak pliku apps.json", "Błąd")
+    [System.Windows.Forms.MessageBox]::Show("Brak pliku apps.json", "Blad")
     exit
 }
 
@@ -40,7 +40,7 @@ $button.Add_Click({
     }
 
     if ($selectedApps.Count -eq 0) {
-        [System.Windows.Forms.MessageBox]::Show("Nie wybrano żadnych aplikacji.", "Uwaga")
+        [System.Windows.Forms.MessageBox]::Show("Nie wybrano zadnych aplikacji.", "Uwaga")
         return
     }
 
@@ -54,12 +54,12 @@ $button.Add_Click({
             Write-Host "Instalacja $($app.name)..."
             Start-Process -FilePath $localPath -ArgumentList $app.args -Wait -NoNewWindow
         } catch {
-            [System.Windows.Forms.MessageBox]::Show("Błąd podczas instalacji $($app.name): `n$_", "Błąd")
+            [System.Windows.Forms.MessageBox]::Show("Blad podczas instalacji $($app.name): `n$_", "Blad")
         }
     }
 
     explorer.exe (Join-Path $PSScriptRoot "AppInstaller")
-    [System.Windows.Forms.MessageBox]::Show("Zakończono instalację wybranych programów.`nFolder instalatorów został otwarty.", "Gotowe")
+    [System.Windows.Forms.MessageBox]::Show("Zakonczono instalacje wybranych programow.`nFolder instalatorow zostal otwarty.", "Gotowe")
     $form.Close()
 })
 
