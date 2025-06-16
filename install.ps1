@@ -65,7 +65,12 @@ $button.Add_Click({
             }
 
             Write-Host "Instalacja $($app.name)..."
-            Start-Process -FilePath $localPath -ArgumentList $app.args -Wait -NoNewWindow
+
+            if ($localPath -like "*.msi") {
+                Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" $($app.args)" -Wait -NoNewWindow
+            } else {
+                Start-Process -FilePath $localPath -ArgumentList $app.args -Wait -NoNewWindow
+            }
         } catch {
             [System.Windows.Forms.MessageBox]::Show("Blad podczas instalacji $($app.name): `n$_", "Blad")
         }
