@@ -21,7 +21,7 @@
   },
   {
     "name": "Adobe Reader",
-    "url": "AppInstaller\\AcroRdrDCx642400620363_pl_PL.exe",
+    "url": "AppInstaller\\Reader_en_install.exe",
     "args": "/sAll"
   },
   {
