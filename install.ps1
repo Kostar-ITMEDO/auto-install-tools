@@ -3,7 +3,7 @@ Add-Type -AssemblyName System.Drawing
 
 # Sciezki
 $jsonPath = Join-Path -Path $PSScriptRoot -ChildPath "apps.json"
-$downloadPath = Join-Path $PSScriptRoot "AppInstaller"
+$downloadPath = Join-Path $env:USERPROFILE "Downloads\AutoInstallers"
 
 if (-not (Test-Path $jsonPath)) {
     [System.Windows.Forms.MessageBox]::Show("Brak pliku apps.json", "Blad")

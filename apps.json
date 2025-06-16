@@ -26,7 +26,7 @@
   },
   {
     "name": "Mozilla Firefox",
-    "url": "AppInstaller\\FirefoxSetup.exe",
+    "url": "AppInstaller\\Firefox Setup 139.0.4.exe",
     "args": "/S"
   },
   {
