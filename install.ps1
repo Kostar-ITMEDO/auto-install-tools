@@ -104,7 +104,7 @@ $btnDownload.Add_Click({
         }
     }
     $progress.Value = 100
-    [System.Windows.Forms.MessageBox]::Show("Instalacja zakonczona.", "Gotowe")
+    [System.Windows.Forms.MessageBox]::Show("Instalacja zakonczona")
 })
 
 # Obsługa kliknięcia Zainstaluj
