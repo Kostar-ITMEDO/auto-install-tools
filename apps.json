@@ -5,11 +5,6 @@
     "args": "/S"
   },
   {
-    "name": "Mozilla Firefox",
-    "url": "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=pl",
-    "args": "/S"
-  },
-  {
     "name": "Google Chrome",
     "url": "https://dl.google.com/chrome/install/375.126/chrome_installer.exe",
     "args": "/silent /install"
@@ -25,18 +20,18 @@
     "args": "--install --silent"
   },
   {
-    "name": "Apache OpenOffice",
-    "url": "https://downloads.sourceforge.net/project/openofficeorg.mirror/4.1.15/binaries/pl/Apache_OpenOffice_4.1.15_Win_x86_install_pl.exe",
-    "args": "/quiet"
-  },
-  {
     "name": "Adobe Reader",
-    "url": "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2400620363/AcroRdrDCx642400620363_pl_PL.exe",
+    "url": "AppInstaller\\AcroRdrDCx642400620363_pl_PL.exe",
     "args": "/sAll"
   },
   {
+    "name": "Mozilla Firefox",
+    "url": "AppInstaller\\FirefoxSetup.exe",
+    "args": "/S"
+  },
+  {
     "name": "Java (JRE)",
-    "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11+9/OpenJDK17U-jre_x64_windows_hotspot_17.0.11_9.msi",
+    "url": "AppInstaller\\OpenJDK17U-jre_x64_windows_hotspot_17.0.11_9.msi",
     "args": "/quiet"
   }
 ]
