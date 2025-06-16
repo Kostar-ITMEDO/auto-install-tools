@@ -3,26 +3,36 @@ Add-Type -AssemblyName System.Drawing
 
 # Pobierz apps.json z GitHuba
 $appsUrl = "https://raw.githubusercontent.com/Kostar-ITMEDO/auto-install-tools/main/apps.json"
-Write-Host "Załadowano aplikacji: $($apps.Count)"
-foreach ($a in $apps) {
-    Write-Host " - $($a.name)"
-}
-
 try {
     $appsJson = Invoke-WebRequest -Uri $appsUrl -UseBasicParsing | Select-Object -ExpandProperty Content
     $apps = $appsJson | ConvertFrom-Json
 } catch {
-    [System.Windows.Forms.MessageBox]::Show("Nie udało się pobrać listy aplikacji (`apps.json`). Sprawdź połączenie internetowe lub dostępność repozytorium.")
+    [System.Windows.Forms.MessageBox]::Show("Nie udało się pobrać listy aplikacji (`apps.json`). Sprawdź połączenie z Internetem lub dostępność repozytorium.")
     exit
 }
 
-# Ścieżka do folderu pobranych instalatorów
+# Obsługa błędów i konwersja do tablicy, jeśli JSON to pojedynczy obiekt
+if ($apps -is [System.Array]) {
+    Write-Host "Załadowano aplikacji: $($apps.Count)"
+} elseif ($apps) {
+    Write-Host "Załadowano jedną aplikację: $($apps.name)"
+    $apps = @($apps)
+} else {
+    Write-Host "❌ Nie załadowano żadnych aplikacji z apps.json"
+    exit
+}
+
+foreach ($a in $apps) {
+    Write-Host " - $($a.name)"
+}
+
+# Ścieżka do folderu docelowego na instalatory
 $downloadPath = Join-Path "$env:USERPROFILE\Downloads" "AppInstall"
 if (-not (Test-Path $downloadPath)) {
     New-Item -ItemType Directory -Path $downloadPath -Force | Out-Null
 }
 
-# GUI – formularz do wyboru aplikacji
+# Tworzenie GUI
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Wybierz programy do instalacji"
 $form.Size = New-Object System.Drawing.Size(400,450)
@@ -43,7 +53,6 @@ $button.Text = "Zainstaluj"
 $button.Location = New-Object System.Drawing.Point(150, 330)
 $form.Controls.Add($button)
 
-# Obsługa kliknięcia "Zainstaluj"
 $button.Add_Click({
     $selectedApps = @()
     foreach ($index in $checkedList.CheckedIndices) {
@@ -68,11 +77,11 @@ $button.Add_Click({
 
                 Write-Host "$($app.name) zainstalowany.`n"
             } catch {
-                Write-Host "Błąd podczas instalacji $($app.name): $_"
+                Write-Host "❌ Błąd podczas instalacji $($app.name): $_"
             }
         }
 
-        [System.Windows.Forms.MessageBox]::Show("Zakonczono instalacje wybranych programow.`nFolder instalatorow zostanie otwarty.")
+        [System.Windows.Forms.MessageBox]::Show("Zakończono instalację wybranych programów.`nFolder instalatorów zostanie otwarty.")
         Start-Process explorer $downloadPath
     }
 })
@@ -80,4 +89,3 @@ $button.Add_Click({
 $form.Topmost = $true
 $form.Add_Shown({ $form.Activate() })
 $form.ShowDialog()
-

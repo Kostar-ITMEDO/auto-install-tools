@@ -1,7 +1,7 @@
 [
   {
     "name": "OpenOffice",
-    "url": "https://netix.dl.sourceforge.net/project/openofficeorg.mirror/4.1.15/binaries/pl/Apache_OpenOffice_4.1.15_Win_x86_install_pl.exe?viasf=1",
+    "url": "https://downloads.sourceforge.net/project/openofficeorg.mirror/4.1.15/binaries/en-US/Apache_OpenOffice_4.1.15_Win_x86_install_en-US.exe",
     "args": "/quiet"
   },
   {
@@ -11,12 +11,12 @@
   },
   {
     "name": "Adobe Reader",
-    "url": "blob:https://get.adobe.com/fe7cfbab-dacc-4762-83f4-d61e60920b07",
+    "url": "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300820420/AcroRdrDCx642300820420_pl_PL.exe",
     "args": "/sAll"
   },
   {
     "name": "Java (JRE)",
-    "url": "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248740_4d5417147a92418ea8b615e228bb6935",
+    "url": "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248738_4d5417147a92418ea8b615e228bb6935",
     "args": "/s"
   },
   {
