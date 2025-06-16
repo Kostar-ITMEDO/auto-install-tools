@@ -1,34 +1,41 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Ustaw ścieżkę do folderu skryptu
-$scriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+# Ustawienie sciezki do folderu skryptu lub fallback do katalogu bieżącego
+$scriptRoot = if ($PSScriptRoot) {
+    $PSScriptRoot
+} elseif ($MyInvocation.MyCommand.Path) {
+    Split-Path -Parent $MyInvocation.MyCommand.Path
+} else {
+    (Get-Location).Path
+}
 
-# Ścieżki
+# Sciezki
 $jsonLocalPath = Join-Path -Path $scriptRoot -ChildPath "apps.json"
 $downloadPath = "C:\ProgramData\AutoInstall"
 
 # Pobierz apps.json, jeśli nie ma lokalnie
 if (-not (Test-Path $jsonLocalPath)) {
-    Write-Host "Brak lokalnego apps.json — pobieram z GitHub..."
+    Write-Host "No local apps.json found. Downloading from GitHub..."
     $jsonUrl = "https://raw.githubusercontent.com/Kostar-ITMEDO/auto-install-tools/main/apps.json"
     try {
         Invoke-WebRequest -Uri $jsonUrl -OutFile $jsonLocalPath -UseBasicParsing -ErrorAction Stop
-    } catch {
-        [System.Windows.Forms.MessageBox]::Show("Blad pobierania apps.json:`n$_", "Blad")
+    }
+    catch {
+        [System.Windows.Forms.MessageBox]::Show("Error downloading apps.json:`n$_", "Error")
         exit
     }
 }
 
-# Utwórz folder cache, jeśli nie istnieje
+# Utworz folder cache, jesli nie istnieje
 if (-not (Test-Path $downloadPath)) {
     New-Item -ItemType Directory -Path $downloadPath -Force | Out-Null
 }
 
-# Wczytaj listę aplikacji
+# Wczytaj liste aplikacji
 $apps = Get-Content $jsonLocalPath | ConvertFrom-Json
 
-# Utwórz GUI
+# Tworzenie GUI
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Auto Install Tools"
 $form.Size = New-Object System.Drawing.Size(420, 500)
@@ -44,12 +51,12 @@ foreach ($app in $apps) {
 }
 
 $btnDownload = New-Object System.Windows.Forms.Button
-$btnDownload.Text = "Pobierz / Aktualizuj"
+$btnDownload.Text = "Download / Update"
 $btnDownload.Size = New-Object System.Drawing.Size(170, 40)
 $btnDownload.Location = New-Object System.Drawing.Point(15, 380)
 
 $btnInstall = New-Object System.Windows.Forms.Button
-$btnInstall.Text = "Zainstaluj"
+$btnInstall.Text = "Install"
 $btnInstall.Size = New-Object System.Drawing.Size(170, 40)
 $btnInstall.Location = New-Object System.Drawing.Point(225, 380)
 
@@ -65,22 +72,21 @@ $form.Controls.Add($btnDownload)
 $form.Controls.Add($btnInstall)
 $form.Controls.Add($progress)
 
-# Funkcja pobierania instalatora
 function Invoke-DownloadInstaller($app) {
     $filename = [System.IO.Path]::GetFileName($app.url)
     $localPath = Join-Path $downloadPath $filename
 
     try {
-        Write-Host "Pobieranie $($app.name)..."
+        Write-Host "Downloading $($app.name)..."
         Invoke-WebRequest -Uri $app.url -OutFile $localPath -UseBasicParsing -ErrorAction Stop
         return $localPath
-    } catch {
-        [System.Windows.Forms.MessageBox]::Show("Blad pobierania $($app.name): `n$_", "Blad")
+    }
+    catch {
+        [System.Windows.Forms.MessageBox]::Show("Error downloading $($app.name): `n$_", "Error")
         return $null
     }
 }
 
-# Obsługa kliknięcia Pobierz / Aktualizuj
 $btnDownload.Add_Click({
     $selectedApps = @()
     for ($i = 0; $i -lt $listbox.Items.Count; $i++) {
@@ -90,7 +96,7 @@ $btnDownload.Add_Click({
     }
 
     if ($selectedApps.Count -eq 0) {
-        [System.Windows.Forms.MessageBox]::Show("Nie wybrano zadnych aplikacji do pobrania.", "Uwaga")
+        [System.Windows.Forms.MessageBox]::Show("No apps selected for download.", "Warning")
         return
     }
 
@@ -103,11 +109,11 @@ $btnDownload.Add_Click({
             $progress.Value += $step
         }
     }
+
     $progress.Value = 100
-    [System.Windows.Forms.MessageBox]::Show("Instalacja zakonczona", "Gotowe")
+    [System.Windows.Forms.MessageBox]::Show("Download complete.", "Done")
 })
 
-# Obsługa kliknięcia Zainstaluj
 $btnInstall.Add_Click({
     $selectedApps = @()
     for ($i = 0; $i -lt $listbox.Items.Count; $i++) {
@@ -117,7 +123,7 @@ $btnInstall.Add_Click({
     }
 
     if ($selectedApps.Count -eq 0) {
-        [System.Windows.Forms.MessageBox]::Show("Nie wybrano zadnych aplikacji do instalacji.", "Uwaga")
+        [System.Windows.Forms.MessageBox]::Show("No apps selected for install.", "Warning")
         return
     }
 
@@ -126,21 +132,24 @@ $btnInstall.Add_Click({
         $localPath = Join-Path $downloadPath $filename
 
         if (-not (Test-Path $localPath)) {
-            [System.Windows.Forms.MessageBox]::Show("Plik instalatora nie istnieje:`n$localPath`nNajpierw pobierz plik.", "Blad")
+            [System.Windows.Forms.MessageBox]::Show("Installer file not found:`n$localPath`nPlease download first.", "Error")
             return
         }
 
         try {
             if ($localPath -like "*.msi") {
                 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" $($app.args)" -Wait -NoNewWindow
-            } else {
+            }
+            else {
                 Start-Process -FilePath $localPath -ArgumentList $app.args -Wait -NoNewWindow
             }
-        } catch {
-            [System.Windows.Forms.MessageBox]::Show("Blad podczas instalacji $($app.name): `n$_", "Blad")
+        }
+        catch {
+            [System.Windows.Forms.MessageBox]::Show("Error installing $($app.name): `n$_", "Error")
         }
     }
-    [System.Windows.Forms.MessageBox]::Show("Instalacja zakonczona.", "Gotowe")
+
+    [System.Windows.Forms.MessageBox]::Show("Installation complete.", "Done")
 })
 
 $form.Topmost = $true
