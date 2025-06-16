@@ -3,7 +3,6 @@ Add-Type -AssemblyName System.Drawing
 
 # Pobierz apps.json z GitHuba
 $appsUrl = "https://raw.githubusercontent.com/Kostar-ITMEDO/auto-install-tools/main/apps.json"
-
 try {
     $appsJson = Invoke-WebRequest -Uri $appsUrl -UseBasicParsing | Select-Object -ExpandProperty Content
     $apps = $appsJson | ConvertFrom-Json
@@ -12,7 +11,13 @@ try {
     exit
 }
 
-# GUI
+# Ścieżka do folderu pobranych instalatorów
+$downloadPath = Join-Path "$env:USERPROFILE\Downloads" "AppInstall"
+if (-not (Test-Path $downloadPath)) {
+    New-Item -ItemType Directory -Path $downloadPath -Force | Out-Null
+}
+
+# GUI – formularz do wyboru aplikacji
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Wybierz programy do instalacji"
 $form.Size = New-Object System.Drawing.Size(400,450)
@@ -33,23 +38,22 @@ $button.Text = "Zainstaluj"
 $button.Location = New-Object System.Drawing.Point(150, 330)
 $form.Controls.Add($button)
 
-# Akcja po kliknięciu
+# Obsługa kliknięcia "Zainstaluj"
 $button.Add_Click({
     $selectedApps = @()
     foreach ($index in $checkedList.CheckedIndices) {
         $selectedApps += $apps[$index]
     }
+
     if ($selectedApps.Count -eq 0) {
         [System.Windows.Forms.MessageBox]::Show("Nie wybrano żadnych programów.")
     } else {
         $form.Close()
-        $tempPath = "$env:TEMP\AppInstall"
-        if (-not (Test-Path $tempPath)) { New-Item -Path $tempPath -ItemType Directory | Out-Null }
 
         foreach ($app in $selectedApps) {
             try {
                 $exeName = Split-Path $app.url -Leaf
-                $installerPath = Join-Path $tempPath $exeName
+                $installerPath = Join-Path $downloadPath $exeName
 
                 Write-Host "Pobieranie $($app.name)..."
                 Invoke-WebRequest -Uri $app.url -OutFile $installerPath -UseBasicParsing
@@ -62,10 +66,13 @@ $button.Add_Click({
                 Write-Host "Błąd podczas instalacji $($app.name): $_"
             }
         }
-        [System.Windows.Forms.MessageBox]::Show("Zakończono instalację wybranych programów.")
+
+        [System.Windows.Forms.MessageBox]::Show("Zakonczono instalacje wybranych programow.`nFolder instalatorow zostanie otwarty.")
+        Start-Process explorer $downloadPath
     }
 })
 
 $form.Topmost = $true
 $form.Add_Shown({ $form.Activate() })
 $form.ShowDialog()
+

@@ -1,17 +1,42 @@
 [
-    {
-        "name": "7-Zip",
-        "url": "https://www.7-zip.org/a/7z2301-x64.exe",
-        "args": "/S"
-    },
-    {
-        "name": "Mozilla Firefox",
-        "url": "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=pl",
-        "args": "/S"
-    },
-    {
-        "name": "Notepad++",
-        "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/latest/download/npp.8.6.8.Installer.x64.exe",
-        "args": "/S"
-    }
+  {
+    "name": "OpenOffice",
+    "url": "https://sourceforge.net/projects/openofficeorg.mirror/files/latest/download",
+    "args": "/quiet"
+  },
+  {
+    "name": "7-Zip",
+    "url": "https://www.7-zip.org/a/7z2301-x64.exe",
+    "args": "/S"
+  },
+  {
+    "name": "Adobe Reader",
+    "url": "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820420/AcroRdrDC2300820420_en_US.exe",
+    "args": "/sAll"
+  },
+  {
+    "name": "Java (JRE)",
+    "url": "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248740_4d5417147a92418ea8b615e228bb6935",
+    "args": "/s"
+  },
+  {
+    "name": "Mozilla Firefox",
+    "url": "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=pl",
+    "args": "/S"
+  },
+  {
+    "name": "Google Chrome",
+    "url": "https://dl.google.com/chrome/install/375.126/chrome_installer.exe",
+    "args": "/silent /install"
+  },
+  {
+    "name": "TeamViewer",
+    "url": "https://download.teamviewer.com/download/TeamViewer_Setup.exe",
+    "args": "/S"
+  },
+  {
+    "name": "AnyDesk",
+    "url": "https://download.anydesk.com/AnyDesk.exe",
+    "args": "--install --silent"
+  }
 ]
