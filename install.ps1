@@ -3,15 +3,20 @@ Add-Type -AssemblyName System.Drawing
 
 # Sciezki
 $jsonPath = Join-Path -Path $PSScriptRoot -ChildPath "apps.json"
+$downloadPath = Join-Path $PSScriptRoot "AppInstaller"
 
 if (-not (Test-Path $jsonPath)) {
     [System.Windows.Forms.MessageBox]::Show("Brak pliku apps.json", "Blad")
     exit
 }
 
+if (-not (Test-Path $downloadPath)) {
+    New-Item -ItemType Directory -Path $downloadPath | Out-Null
+}
+
 $apps = Get-Content $jsonPath | ConvertFrom-Json
 
-# Tworzenie GUI
+# GUI
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Auto Install Tools"
 $form.Size = New-Object System.Drawing.Size(400, 450)
@@ -46,9 +51,17 @@ $button.Add_Click({
 
     foreach ($app in $selectedApps) {
         try {
-            $localPath = Join-Path -Path $PSScriptRoot -ChildPath $app.url
-            if (-not (Test-Path $localPath)) {
-                throw "Plik nie istnieje: $localPath"
+            if ($app.url -like "http*") {
+                $filename = [System.IO.Path]::GetFileName($app.url)
+                $localPath = Join-Path $downloadPath $filename
+
+                Write-Host "Pobieranie $($app.name) do $localPath..."
+                Invoke-WebRequest -Uri $app.url -OutFile $localPath -UseBasicParsing
+            } else {
+                $localPath = Join-Path $PSScriptRoot $app.url
+                if (-not (Test-Path $localPath)) {
+                    throw "Plik nie istnieje: $localPath"
+                }
             }
 
             Write-Host "Instalacja $($app.name)..."
@@ -58,7 +71,7 @@ $button.Add_Click({
         }
     }
 
-    explorer.exe (Join-Path $PSScriptRoot "AppInstaller")
+    explorer.exe $downloadPath
     [System.Windows.Forms.MessageBox]::Show("Zakonczono instalacje wybranych programow.`nFolder instalatorow zostal otwarty.", "Gotowe")
     $form.Close()
 })
