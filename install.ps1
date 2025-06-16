@@ -98,7 +98,7 @@ $btnDownload.Add_Click({
     $step = [Math]::Floor(100 / $selectedApps.Count)
 
     foreach ($app in $selectedApps) {
-        $result = Download-Installer $app
+        $result = Invoke-DownloadInstaller $app
         if ($result) {
             $progress.Value += $step
         }
