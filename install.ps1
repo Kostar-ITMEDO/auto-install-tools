@@ -3,6 +3,11 @@ Add-Type -AssemblyName System.Drawing
 
 # Pobierz apps.json z GitHuba
 $appsUrl = "https://raw.githubusercontent.com/Kostar-ITMEDO/auto-install-tools/main/apps.json"
+Write-Host "Załadowano aplikacji: $($apps.Count)"
+foreach ($a in $apps) {
+    Write-Host " - $($a.name)"
+}
+
 try {
     $appsJson = Invoke-WebRequest -Uri $appsUrl -UseBasicParsing | Select-Object -ExpandProperty Content
     $apps = $appsJson | ConvertFrom-Json

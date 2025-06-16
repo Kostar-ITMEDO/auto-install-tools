@@ -1,7 +1,7 @@
 [
   {
     "name": "OpenOffice",
-    "url": "https://sourceforge.net/projects/openofficeorg.mirror/files/latest/download",
+    "url": "https://netix.dl.sourceforge.net/project/openofficeorg.mirror/4.1.15/binaries/pl/Apache_OpenOffice_4.1.15_Win_x86_install_pl.exe?viasf=1",
     "args": "/quiet"
   },
   {
@@ -11,7 +11,7 @@
   },
   {
     "name": "Adobe Reader",
-    "url": "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820420/AcroRdrDC2300820420_en_US.exe",
+    "url": "blob:https://get.adobe.com/fe7cfbab-dacc-4762-83f4-d61e60920b07",
     "args": "/sAll"
   },
   {
