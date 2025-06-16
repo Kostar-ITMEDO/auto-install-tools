@@ -1,13 +1,18 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Własna zmienna ścieżki
+$scriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+
 # Sciezki
-$jsonPath = Join-Path -Path $PSScriptRoot -ChildPath "apps.json"
+$jsonPath = Join-Path -Path $scriptRoot -ChildPath "apps.json"
 $downloadPath = Join-Path $env:USERPROFILE "Downloads\AutoInstallers"
 
+
+# Pobierz apps.json z GitHuba, jeśli go nie ma lokalnie
 if (-not (Test-Path $jsonPath)) {
-    [System.Windows.Forms.MessageBox]::Show("Brak pliku apps.json", "Blad")
-    exit
+    Write-Host "Brak lokalnego apps.json – pobieranie z GitHuba..."
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Kostar-ITMEDO/auto-install-tools/main/apps.json" -OutFile $jsonPath -UseBasicParsing
 }
 
 if (-not (Test-Path $downloadPath)) {
