@@ -3,17 +3,53 @@
 Narzędzie dla serwisantów do szybkiej instalacji popularnych aplikacji po świeżej instalacji Windowsa.  
 Umożliwia **graficzny wybór** aplikacji do zainstalowania z aktualnych źródeł internetowych.
 
-
-iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Kostar-ITMEDO/auto-install-tools/main/install.ps1'))
-
 ---
 
-## ✅ Jak używać?
+## ✅ Jak uruchomić skrypt instalacyjny PowerShell z pendrive’a — krok po kroku
 
-1. **Skopiuj pliki na pendrive lub uruchom z folderu lokalnego**.
-2. Uruchom `install.ps1` jako **Administrator** (prawy przycisk → „Uruchom jako Administrator”).
-3. Wybierz z listy aplikacje do zainstalowania.
-4. Skrypt automatycznie pobierze i zainstaluje wybrane programy.
+### 2. Otwórz PowerShell jako administrator
+
+- Kliknij **Start**  
+- Wpisz **PowerShell**  
+- Kliknij prawym przyciskiem i wybierz **Uruchom jako administrator**
+
+### 3. Przejdź do litery pendrive’a
+
+- Sprawdź, pod jaką literą jest Twój pendrive (np. `E:`)  
+- Wpisz w PowerShell:
+
+```powershell
+E:
+(zamień E: na właściwą literę)
+
+4. Wejdź do folderu, w którym jest skrypt
+Przykład: jeśli masz folder AutoInstall na pendrive, wpisz:
+
+powershell
+Kopiuj
+cd .\AutoInstall\
+Sprawdź, czy w tym folderze masz install.ps1 i apps.json:
+
+powershell
+Kopiuj
+dir
+5. Uruchom skrypt z odpowiednią polityką wykonania
+Aby ominąć ograniczenia polityki PowerShell, wpisz:
+
+powershell
+Kopiuj
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+6. Korzystaj z GUI
+Pojawi się okno z listą aplikacji
+
+Zaznacz aplikacje, które chcesz pobrać (Download / Update)
+
+Po pobraniu kliknij Install dla wybranych aplikacji
+
+7. Po instalacji
+Możesz zamknąć okno i odłączyć pendrive
+
+Instalatory są zapisywane w C:\ProgramData\AutoInstall (ukryty)
 
 ---
 
@@ -48,3 +84,4 @@ Edytuj plik `apps.json`, np.:
   "url": "https://adres-do-instalki.exe",
   "args": "/silent"
 }
+
