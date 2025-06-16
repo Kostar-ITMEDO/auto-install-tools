@@ -82,7 +82,7 @@ $button.Add_Click({
     }
 
     explorer.exe $downloadPath
-    [System.Windows.Forms.MessageBox]::Show("Zakonczono instalacje wybranych programow.`nFolder instalatorow zostal otwarty.", "Gotowe")
+    [System.Windows.Forms.MessageBox]::Show("Installation of selected programs finished.`nInstaller folder has been opened.", "Done")
     $form.Close()
 })
 
