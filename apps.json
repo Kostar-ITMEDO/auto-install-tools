@@ -1,37 +1,42 @@
 [
   {
     "name": "7-Zip",
-    "url": "https://www.7-zip.org/a/7z2301-x64.exe",
-    "args": "/S"
-  },
-  {
-    "name": "Google Chrome",
-    "url": "https://dl.google.com/chrome/install/375.126/chrome_installer.exe",
-    "args": "/silent /install"
-  },
-  {
-    "name": "TeamViewer",
-    "url": "https://download.teamviewer.com/download/TeamViewer_Setup.exe",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/7z2301-x64.exe",
     "args": "/S"
   },
   {
     "name": "AnyDesk",
-    "url": "https://download.anydesk.com/AnyDesk.exe",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/AnyDesk.exe",
     "args": "--install --silent"
   },
   {
-    "name": "Adobe Reader",
-    "url": "AppInstaller\\Reader_en_install.exe",
-    "args": "/sAll"
+    "name": "Apache OpenOffice",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/Apache_OpenOffice_4.1.15_Win_x86_install_pl.exe",
+    "args": "/quiet"
+  },
+  {
+    "name": "Google Chrome",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/ChromeSetup.exe",
+    "args": "/silent /install"
   },
   {
     "name": "Mozilla Firefox",
-    "url": "AppInstaller\\Firefox Setup 139.0.4.exe",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/Firefox.Setup.139.0.4.exe",
     "args": "/S"
   },
   {
     "name": "Java (JRE)",
-    "url": "AppInstaller\\OpenJDK17U-jre_x64_windows_hotspot_17.0.11_9.msi",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/OpenJDK17U-jre_x64_windows_hotspot_17.0.11_9.msi",
     "args": "/quiet"
+  },
+  {
+    "name": "Adobe Reader",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/Reader_en_install.exe",
+    "args": "/sAll"
+  },
+  {
+    "name": "TeamViewer",
+    "url": "https://github.com/Kostar-ITMEDO/auto-install-tools/releases/download/v1.0/TeamViewer_Setup.exe",
+    "args": "/S"
   }
 ]
