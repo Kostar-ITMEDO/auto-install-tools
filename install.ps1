@@ -1,27 +1,28 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Własna zmienna ścieżki
+# Ustawienie zmiennej ścieżki skryptu
 $scriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 
-# Sciezki
+# Ścieżki
 $jsonPath = Join-Path -Path $scriptRoot -ChildPath "apps.json"
 $downloadPath = Join-Path $env:USERPROFILE "Downloads\AutoInstallers"
 
-
-# Pobierz apps.json z GitHuba, jeśli go nie ma lokalnie
+# Pobranie apps.json, jeśli nie ma lokalnie
 if (-not (Test-Path $jsonPath)) {
     Write-Host "Brak lokalnego apps.json – pobieranie z GitHuba..."
     Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Kostar-ITMEDO/auto-install-tools/main/apps.json" -OutFile $jsonPath -UseBasicParsing
 }
 
+# Utworzenie folderu na instalatory
 if (-not (Test-Path $downloadPath)) {
     New-Item -ItemType Directory -Path $downloadPath | Out-Null
 }
 
+# Wczytanie listy aplikacji
 $apps = Get-Content $jsonPath | ConvertFrom-Json
 
-# GUI
+# Tworzenie GUI
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Auto Install Tools"
 $form.Size = New-Object System.Drawing.Size(400, 450)
@@ -63,7 +64,7 @@ $button.Add_Click({
                 Write-Host "Pobieranie $($app.name) do $localPath..."
                 Invoke-WebRequest -Uri $app.url -OutFile $localPath -UseBasicParsing
             } else {
-                $localPath = Join-Path $PSScriptRoot $app.url
+                $localPath = Join-Path $scriptRoot $app.url
                 if (-not (Test-Path $localPath)) {
                     throw "Plik nie istnieje: $localPath"
                 }
