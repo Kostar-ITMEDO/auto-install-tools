@@ -77,11 +77,11 @@ $button.Add_Click({
 
                 Write-Host "$($app.name) zainstalowany.`n"
             } catch {
-                Write-Host "❌ Błąd podczas instalacji $($app.name): $_"
+                Write-Host "Blad podczas instalacji $($app.name): $_"
             }
         }
 
-        [System.Windows.Forms.MessageBox]::Show("Zakończono instalację wybranych programów.`nFolder instalatorów zostanie otwarty.")
+        [System.Windows.Forms.MessageBox]::Show("Instalacja zakonczona. Folder z instalatorami zostanie otwarty.")
         Start-Process explorer $downloadPath
     }
 })
@@ -89,3 +89,4 @@ $button.Add_Click({
 $form.Topmost = $true
 $form.Add_Shown({ $form.Activate() })
 $form.ShowDialog()
+
